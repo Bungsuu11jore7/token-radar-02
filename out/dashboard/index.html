@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token Radar — Farming ROI Velocity</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <div class="mark">▲</div>
+    <div>
+      <h1>TOKEN RADAR</h1>
+      <p class="tag">Farming ROI velocity — which pre-token protocol is worth farming next</p>
+    </div>
+  </div>
+  <div class="meta" id="meta"></div>
+</header>
+
+<section class="leaders" id="leaders" aria-label="Velocity leaders"></section>
+
+<section class="controls">
+  <input id="q" type="search" placeholder="Search a protocol…" autocomplete="off">
+  <select id="cat" aria-label="Category"><option value="">All categories</option></select>
+  <select id="chain" aria-label="Chain"><option value="">All chains</option></select>
+  <label class="vel">Min velocity <input id="minvel" type="range" min="0" max="100" value="0" step="5"> <b id="minvelval">0</b></label>
+  <label class="chk"><input id="watchonly" type="checkbox"> Watchlist only</label>
+  <select id="sort" aria-label="Sort by">
+    <option value="implied">Sort: implied value</option>
+    <option value="velocity">Sort: velocity</option>
+    <option value="tvl">Sort: TVL</option>
+    <option value="growth">Sort: 7d momentum</option>
+    <option value="age">Sort: age</option>
+  </select>
+</section>
+
+<main class="split">
+  <div class="boardwrap">
+    <div class="boardhead"><h2 id="boardtitle">The board</h2><span id="count"></span></div>
+    <table id="board">
+      <thead><tr>
+        <th data-k="rank">#</th><th data-k="name">Protocol</th><th data-k="category">Category</th>
+        <th data-k="tvl">TVL</th><th data-k="growth">7d</th>
+        <th data-k="age">Age</th><th data-k="tge">TGE clock</th><th data-k="velocity">Velocity</th><th data-k="implied">Implied value</th>
+      </tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <p class="note" id="shownote"></p>
+  </div>
+  <aside class="detail" id="detail" aria-label="Protocol detail"></aside>
+</main>
+
+<section class="model">
+  <h2>How the radar scores — model radar-2</h2>
+  <p class="formula">implied value = TVL<sup>0.9</sup> × 1.6 × growth × overdue × breadth × category</p>
+  <div class="factors">
+    <div><b>Growth</b><span>7-day TVL change, clamped to −60…+200%, then a concave velocity. A +4,448% spike counts as fast, not as 44×.</span></div>
+    <div><b>Overdue</b><span>Days running with no token recorded. A launch is likeliest inside a window around 700 days — not at the start, not never.</span></div>
+    <div><b>Breadth</b><span>Each extra chain up to 8 adds 4%. A protocol live on many chains has more doors to farm through.</span></div>
+    <div><b>Category</b><span>A small prior by family (0.92–1.06). Points programs cluster in Dexs, lending and derivatives; bridges and staked products rarely launch a token of their own.</span></div>
+  </div>
+  <p class="honest"><b>What the snapshot cannot say.</b> It carries no testnet activity, no points program and no fundraising record — so momentum, overdue age and category are <i>proxies</i> for airdrop probability, built from the figures the snapshot does carry. The board says a protocol <i>records no token</i>, never that it has none: a protocol on the list may still hold a token its DefiLlama record does not carry.</p>
+  <p class="honest"><b>Velocity score (0–100).</b> The farming-priority read: 45% momentum, 30% overdue, 15% breadth, 10% scale. The board ranks by implied value; velocity tells you where to farm first among near neighbours.</p>
+</section>
+
+<section class="live">
+  <h2>Already trading — shown at market value, never ranked</h2>
+  <p class="note">These protocols record a token, so the model does not rank them. Their value is the market's own: market cap, not a model's claim.</p>
+  <table id="livetable">
+    <thead><tr><th>Protocol</th><th>Category</th><th>Chains</th><th>TVL</th><th>Market cap</th><th>7d</th></tr></thead>
+    <tbody id="liverows"></tbody>
+  </table>
+</section>
+
+<footer>
+  <p>Snapshot: DefiLlama protocols, fetched 2026-11-14. Watchlist floor $50,000,000 TVL. Board: <span id="footstats"></span>. Model radar-2. Implied values are this entry's own claim, never a promise — a token may never launch, and a farm plan is not financial advice.</p>
+</footer>
+<script src="../data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
